@@ -1,0 +1,5 @@
+Falsified (after 95 tests and 43 shrinks):
+         Type {work = 11, velocity = 0, effortFraction = 2 % 13,
+         examples = [0,32], trials = 6, seed = 0}
+                  6
+                           1

@@ -1,0 +1,58 @@
+name:                estimate
+version:             0.1.0.0
+github:              "bjaress/estimate"
+license:             "GPL-3.0-only"
+author:              "Brian Jaress"
+maintainer:          "bjaress@gmail"
+copyright:           "2020 Brian Jaress"
+
+extra-source-files:
+- README.txt
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            program
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/bjaress/estimate#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+  dependencies:
+  - optparse-applicative
+  - yaml
+  - bytestring
+  - random
+  - hashable
+
+executables:
+  estimate:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - estimate
+
+tests:
+  estimate-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - estimate
+    - hspec
+    - hspec-core
+    - QuickCheck
+    - random
