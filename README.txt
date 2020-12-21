@@ -32,11 +32,13 @@ Available options:
                            defined. For example, your process might include a
                            final best-practices review that seems to request a
                            consistent amount of additional work, no matter what
-                           practices were followed.
+                           practices were followed. (default: 0)
   --simulationTrials INTEGER
-                           Number of times to simulate completing the project
+                           Number of times to simulate completing the
+                           project. (default: 10000)
   --simulationSeed INTEGER Seed for random number generator used in simulations
-  -v,--verbose             Repeat input and intermediate values in output
+                           Default is to derive a seed from other options.
+  -v,--verbose             Repeat input and intermediate values in output.
   -h,--help                Show this help text
 
 https://github.com/bjaress/estimate

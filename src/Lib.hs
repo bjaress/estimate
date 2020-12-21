@@ -112,23 +112,28 @@ options = Options.Type
             , "amount of additional work, no matter what practices were"
             , "followed."
             ]
+       <> showDefault
        <> value 0 )
 
     <*> option auto
         ( long "simulationTrials"
        <> metavar "INTEGER"
-       <> help "Number of times to simulate completing the project"
+       <> help "Number of times to simulate completing the project."
+       <> showDefault
        <> value 10000 )
 
     <*> (optional . option auto)
         ( long "simulationSeed"
        <> metavar "INTEGER"
-       <> help "Seed for random number generator used in simulations" )
+       <> (help . paragraph)
+            [ "Seed for random number generator used in simulations"
+            , "Default is to derive a seed from other options."
+            ])
 
     <*> switch
         ( long "verbose"
        <> short 'v'
-       <> help "Repeat input and intermediate values in output" )
+       <> help "Repeat input and intermediate values in output." )
 
 
 paragraph :: [String] -> String
