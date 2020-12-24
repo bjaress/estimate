@@ -42,5 +42,5 @@ $(dir)/package : $(dir)/test $(dir)/docker Dockerfile
 
 deploy : $(dir)/deploy
 $(dir)/deploy : $(dir)/package
-	docker push -t $(DOCKER_TAG)
+	docker push $(DOCKER_TAG)
 	$(done)
