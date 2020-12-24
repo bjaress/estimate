@@ -6,10 +6,6 @@ author:              "Brian Jaress"
 maintainer:          "bjaress@gmail"
 copyright:           "2020 Brian Jaress"
 
-extra-source-files:
-- README.txt
-- ChangeLog.md
-
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
 # category:            program
