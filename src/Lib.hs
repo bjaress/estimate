@@ -54,6 +54,8 @@ main = do
             ,[ "For planning purposes, you can also input the amount of work"
              , "you intend to do per time interval and the fraction of that"
              , "work you intend to spend on the project being estimated."
+             ]
+            ,[ "Whether you believe the estimates is up to you."
              ]])
      <> footer "https://github.com/bjaress/estimate")
 
