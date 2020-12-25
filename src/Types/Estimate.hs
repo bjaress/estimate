@@ -10,7 +10,7 @@ import qualified Data.Yaml as Yaml
 instance Yaml.ToJSON Type
 
 data Type = Type
-  { timeIntervals :: Int
-  , confidence :: String
+  { target :: Int
+  , success :: String
   }
   deriving (Show, Eq, Generic)

@@ -46,15 +46,14 @@ main = do
      <> header "Scrum-style project estimation"
      <> progDescDoc ( paragraphs
             [[ "Estimate how many time intervals are needed for an amount of"
-             , "work.  This program assumes that time intervals are shared"
-             , "with other projects.  Because of that, velocity inputs are"
-             , "adjusted by a focus amount."
+             , "work.  The estimate is expressed as a target number of time"
+             , "intervals and a success rate.  It's based on the amount of"
+             , "work to do and examples of how much work was done in past"
+             , "time intervals."
              ]
-            ,[ "For example, suppose you always do 100 units of work in"
-             , "every time interval, and you plan to spend half the work in"
-             , "each time interval on a project.  Estimate that project with"
-             , "a velocity of 100 and a focus of one half.  If the answer is 3,"
-             , "it's an estimate the project will last for three time intervals."
+            ,[ "For planning purposes, you can also input the amount of work"
+             , "you intend to do per time interval and the fraction of that"
+             , "work you intend to spend on the project being estimated."
              ]])
      <> footer "https://github.com/bjaress/estimate")
 
@@ -62,8 +61,8 @@ main = do
 estimate :: NormalizedOptions.Type -> Estimate.Type
 estimate norm = Estimate.Type{..}
     where
-    timeIntervals = PointEstimate.sprints norm
-    confidence = (++ "%") $ show $ floor $ 100 * (Simulation.simulate timeIntervals norm)
+    target = PointEstimate.sprints norm
+    success = (++ "%") $ show $ floor $ 100 * (Simulation.simulate target norm)
 
 
 
