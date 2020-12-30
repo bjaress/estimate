@@ -1,4 +1,4 @@
-DOCKER_TAG=bjaress/estimate
+
 
 # For commands that don't produce any files, we make one ourselves
 dir=.stack-work/make
@@ -30,17 +30,17 @@ $(dir)/docker :
 	$(done)
 
 
-build : $(dir)/estimate
-$(dir)/estimate : app/ src/ $(dir)/stack
+build : $(dir)/estimate $(dir)/program-info
+$(dir)/estimate $(dir)/program-info: app/ src/ $(dir)/stack
 	stack --local-bin-path $(dir) build --copy-bins
 
 package : $(dir)/package
-$(dir)/package : $(dir)/test $(dir)/docker Dockerfile
-	docker build . -t $(DOCKER_TAG)
+$(dir)/package : $(dir)/program-info $(dir)/docker Dockerfile
+	docker build -t `$(dir)/program-info` .
 	$(done)
 
 
 deploy : $(dir)/deploy
 $(dir)/deploy : $(dir)/package
-	docker push $(DOCKER_TAG)
+	docker push `$(dir)/program-info`
 	$(done)

@@ -18,6 +18,7 @@ import qualified Types.Options as Options
 import qualified Types.EstimationResult as EstimationResult
 
 import qualified Lib
+import qualified ProgramInfo
 
 main :: IO ()
 main = do
@@ -43,7 +44,7 @@ main = do
              ]
             ,[ "Whether you believe the estimates is up to you."
              ]])
-     <> footer "https://github.com/bjaress/estimate")
+     <> footerDoc (preformatted [ProgramInfo.url, ProgramInfo.fullVersion]))
 
 
 prettyPrint :: Options.Type -> EstimationResult.Type -> IO ()
@@ -58,12 +59,18 @@ prettyPrint opt result
 paragraph :: [String] -> String
 paragraph = List.intercalate " "
 
-
--- For some reason, you've really got to go around the barn for this.
+{- For some reason, you've really got to go around the barn for these.
 -- At least, I couldn't find an easier way.
+-}
+-- Lines that aren't run together
+preformatted :: [String] -> Maybe Pretty.Doc
+preformatted = Chunk.unChunk . Chunk.vcatChunks . (Chunk.stringChunk <$>)
+-- Lists of lines that are run together within each sublist, then
+-- separated by a blank line
 paragraphs :: [[String]] -> Maybe Pretty.Doc
 paragraphs =
-    Chunk.unChunk . Chunk.vsepChunks . (Chunk.paragraph . List.intercalate " " <$>)
+    Chunk.unChunk . Chunk.vsepChunks . (Chunk.paragraph . paragraph <$>)
+
 
 options :: Parser Options.Type
 options = Options.Type

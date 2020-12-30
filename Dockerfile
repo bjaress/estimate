@@ -7,9 +7,11 @@ COPY stack.yaml .
 RUN stack build --dependencies-only
 RUN stack test --dependencies-only
 
-COPY app app/
 COPY src src/
-RUN stack --local-bin-path . build --copy-bins
+COPY app app/
+COPY program-info program-info/
+RUN stack --local-bin-path bin build --copy-bins
+RUN /bin/program-info
 
 COPY test test/
 RUN stack test
@@ -17,6 +19,6 @@ RUN stack test
 
 FROM ubuntu:18.04
 
-COPY --from=build /estimate .
+COPY --from=build /bin/estimate .
 ENTRYPOINT ["./estimate"]
 USER nobody

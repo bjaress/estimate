@@ -1,5 +1,5 @@
 name:                estimate
-version:             0.1.0.0
+version:             0.0.0.0 # see app/ProgramInfo.hs for real version
 github:              "bjaress/estimate"
 license:             "GPL-3.0-only"
 author:              "Brian Jaress"
@@ -38,6 +38,11 @@ executables:
     - optparse-applicative
     - bytestring
     - yaml
+  program-info:
+    main:                Main.hs
+    source-dirs:         program-info
+    dependencies:
+    - estimate
 
 tests:
   estimate-test:
