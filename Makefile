@@ -37,10 +37,13 @@ $(dir)/estimate: app/ src/ $(dir)/stack
 package : $(dir)/package
 $(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile
 	docker build -t `$(dir)/estimate --version` .
-	$(done)
+	# tag as latest
+	docker tag `$(dir)/estimate --version` `$(dir)/estimate --name`
+	docker images -q `$(dir)/estimate --version` > $@
 
 
 deploy : $(dir)/deploy
-$(dir)/deploy : $(dir)/package
+$(dir)/deploy : $(dir)/package $(dir)/estimate
 	docker push `$(dir)/estimate --version`
+	docker push `$(dir)/estimate --name`
 	$(done)

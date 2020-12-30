@@ -28,7 +28,7 @@ main = do
 
     where
 
-    optionDescription = info (options <**> helper <**> versionOpt)
+    optionDescription = info (options <**> helper <**> versionOpt <**> nameOpt)
         ( fullDesc
        <> header "Scrum-style project estimation"
        <> progDescDoc ( paragraphs
@@ -49,6 +49,9 @@ main = do
     versionOpt = infoOption ProgramInfo.fullVersion
         ( long "version"
        <> help "Print version string and exit.")
+    nameOpt = infoOption ProgramInfo.fullName
+        ( long "name"
+       <> help "Print program name and exit.")
 
 
 prettyPrint :: Options.Type -> EstimationResult.Type -> IO ()
