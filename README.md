@@ -16,18 +16,23 @@ Whether you believe the estimates is up to you.
 
 If you have Docker, it's the easiest way to run the program:
 
-    docker run bjaress/estimate --help
+    $ docker run bjaress/estimate --help
 
 If an updated version is released, you can bring it into your Docker
 cache with:
 
-    docker pull bjaress/estimate
+    $ docker pull bjaress/estimate
 
-If you don't have Docker, the easiest way is to [install Docker][] and then
-follow the instructions above.
+If you don't have Docker, you can [install Docker][] and then follow the
+instructions above.
 
-You can also install [The Haskell Tool Stack][] to build and run the
-program from source.
+You can also install [The Haskell Tool Stack][] to build and install the
+program from source:
+
+    $ stack install
+
+That avoids a delay of a few seconds on each run that Docker adds for
+some people.
 
 [install Docker]: https://www.docker.com/get-started
 [The Haskell Tool Stack]: https://docs.haskellstack.org/en/stable/README/#how-to-install
@@ -44,7 +49,7 @@ Estimating 100 units of work based on six past time intervals:
 
 Setting a more ambitious intention:
 
-    $ docker run bjaress/estimate --targetVelocity=50 100 '[65, 30, 50, 70, 40, 90]'
+    $ docker run bjaress/estimate --target-velocity=50 100 '[65, 30, 50, 70, 40, 90]'
     success: 70%
     target: 3
 
