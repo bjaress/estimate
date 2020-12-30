@@ -128,7 +128,7 @@ testCases =
             , Options.targetVelocity = Nothing }
         , expected = baseExpected
             { NormalizedOptions.pastVelocities = [3, 1, 2]
-            , NormalizedOptions.velocity = 1 }
+            , NormalizedOptions.velocity = 2 }
         }
 
     , TestCase
@@ -138,7 +138,7 @@ testCases =
             , Options.targetVelocity = Nothing }
         , expected = baseExpected
             { NormalizedOptions.pastVelocities = [40, 30, 50, 60, 70, 10, 100]
-            , NormalizedOptions.velocity = 39 }
+            , NormalizedOptions.velocity = 30 }
         }
 
     , TestCase
@@ -155,7 +155,7 @@ testCases =
             }
         , expected = NormalizedOptions.Type
             { work = 65
-            , velocity = 44
+            , velocity = 45
             , focus = 2 % 3
             , pastVelocities = [45]
             , simulationTrials = 10000

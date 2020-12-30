@@ -45,6 +45,6 @@ wholes xs = max 1 <$> xs
 fraction :: Integral a => Ratio.Ratio a -> Ratio.Ratio a
 fraction = max $ 1 % 1000
 
--- Rule of thumb, takes *under* the 33rd percentile as a safe target.
+-- Rule of thumb: take the second lowest
 typical :: (Num a, Ord a, Enum a) => [a] -> a
-typical xs = max 1 $ pred . head $ drop  (length xs `div` 3) (List.sort xs)
+typical = (!! 1) . cycle . List.sort
