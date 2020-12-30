@@ -6,15 +6,15 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.Hspec.Core.QuickCheck (modifyMaxSuccess)
 
-
-import qualified Types.NormalizedOptions as NormalizedOptions
-import Simulation
-import qualified TypeGenerators as Generate
-
 import qualified System.Random as Random
 import qualified Control.Monad as Control
 import qualified Data.Ratio as Ratio
 import Data.Ratio ((%))
+
+import qualified Types.NormalizedOptions as NormalizedOptions
+import qualified TypeGenerators as Generate
+import qualified Hammer
+import Simulation
 
 
 -- Full simulations are complex and need extra exploration to find
@@ -47,7 +47,7 @@ spec = describe "Simulation" $ do
                 , simulationSeed = 0
                 } `shouldBe` 0 % 1
 
-        hammer $ it "more effort gives more success" $ property $ \options ->
+        Hammer.it "more effort gives more success" $ property $ \options ->
             forAll Generate.positive $ \target ->
             forAll Generate.fraction $ \f1 ->
             forAll Generate.fraction $ \f2 ->
@@ -56,7 +56,7 @@ spec = describe "Simulation" $ do
                 simulate target options {NormalizedOptions.focus = focused} >=
                     simulate target options {NormalizedOptions.focus = unfocused}
 
-        hammer $ it "smaller project gives more success" $ property $ \options ->
+        Hammer.it "smaller project gives more success" $ property $ \options ->
             forAll Generate.positive $ \target ->
             forAll Generate.positive $ \w1 ->
             forAll Generate.positive $ \w2 ->
@@ -65,21 +65,21 @@ spec = describe "Simulation" $ do
                 simulate target options {NormalizedOptions.work = lessWork} >=
                     simulate target options {NormalizedOptions.work = moreWork}
 
-        hammer $ it "more time gives more success" $ property $ \options ->
+        Hammer.it "more time gives more success" $ property $ \options ->
             forAll Generate.positive $ \t1 ->
             forAll Generate.positive $ \t2 ->
                 let moreTime = max t1 t2 in
                 let lessTime = min t1 t2 in
                 simulate moreTime options >= simulate lessTime options
 
-        hammer $ it "higher historical velocity gives more success" $ property $ \options ->
+        Hammer.it "higher historical velocity gives more success" $ property $ \options ->
             forAll Generate.positive $ \target ->
             forAll Generate.positive $ \boost ->
                 let highVelocity = (+boost) <$> NormalizedOptions.pastVelocities options in
                 simulate target options {NormalizedOptions.pastVelocities = highVelocity}
                     >= simulate target options
 
-        hammer $ it "always gives an answer in range" $
+        Hammer.it "always gives an answer in range" $
             property $ \options ->
             forAll Generate.positive $ \target ->
             let result = simulate target options in

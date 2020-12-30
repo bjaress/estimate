@@ -21,9 +21,7 @@ dependencies:
 library:
   source-dirs: src
   dependencies:
-  - optparse-applicative
   - yaml
-  - bytestring
   - random
   - hashable
 
@@ -37,6 +35,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - estimate
+    - optparse-applicative
+    - bytestring
+    - yaml
 
 tests:
   estimate-test:
