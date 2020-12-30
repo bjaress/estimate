@@ -1,6 +1,6 @@
 module ProgramInfo where
 
-version = "1.0.0"
+version = "1.1.0"
 
 namespace = "bjaress"
 name = "estimate"

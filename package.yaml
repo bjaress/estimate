@@ -38,11 +38,6 @@ executables:
     - optparse-applicative
     - bytestring
     - yaml
-  program-info:
-    main:                Main.hs
-    source-dirs:         program-info
-    dependencies:
-    - estimate
 
 tests:
   estimate-test:

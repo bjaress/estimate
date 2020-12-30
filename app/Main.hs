@@ -28,10 +28,10 @@ main = do
 
     where
 
-    optionDescription = info (options <**> helper)
-      ( fullDesc
-     <> header "Scrum-style project estimation"
-     <> progDescDoc ( paragraphs
+    optionDescription = info (options <**> helper <**> versionOpt)
+        ( fullDesc
+       <> header "Scrum-style project estimation"
+       <> progDescDoc ( paragraphs
             [[ "Estimate how many time intervals are needed for an amount of"
              , "work.  The estimate is expressed as a target number of time"
              , "intervals and a success rate.  It's based on the amount of"
@@ -44,7 +44,11 @@ main = do
              ]
             ,[ "Whether you believe the estimates is up to you."
              ]])
-     <> footerDoc (preformatted [ProgramInfo.url, ProgramInfo.fullVersion]))
+       <> footerDoc (preformatted [ProgramInfo.url, ProgramInfo.fullVersion]))
+
+    versionOpt = infoOption ProgramInfo.fullVersion
+        ( long "version"
+       <> help "Print version string and exit.")
 
 
 prettyPrint :: Options.Type -> EstimationResult.Type -> IO ()
@@ -88,7 +92,7 @@ options = Options.Type
             ])
 
     <*> (optional . option auto)
-        ( long "targetVelocity"
+        ( long "target-velocity"
        <> metavar "INTEGER"
        <> (help . paragraph)
             [ "Typical or target amount of work done per time interval"
@@ -108,7 +112,7 @@ options = Options.Type
        <> metavar "PERCENT_SEPARATED_FRACTION" )
 
     <*> option auto
-        ( long "undefinedWork"
+        ( long "undefined-work"
        <> metavar "INTEGER"
        <> (help . paragraph)
             [ "Amount of work that is expected but not fully defined."
@@ -121,14 +125,14 @@ options = Options.Type
        <> value 0 )
 
     <*> option auto
-        ( long "simulationTrials"
+        ( long "simulation-trials"
        <> metavar "INTEGER"
        <> help "Number of times to simulate completing the project."
        <> showDefault
        <> value 10000 )
 
     <*> (optional . option auto)
-        ( long "simulationSeed"
+        ( long "simulation-seed"
        <> metavar "INTEGER"
        <> (help . paragraph)
             [ "Seed for random number generator used in simulations"
@@ -138,5 +142,5 @@ options = Options.Type
     <*> switch
         ( long "verbose"
        <> short 'v'
-       <> help "Repeat input and intermediate values in output." )
+       <> help "Include intermediate values in output." )
 

@@ -9,9 +9,7 @@ RUN stack test --dependencies-only
 
 COPY src src/
 COPY app app/
-COPY program-info program-info/
 RUN stack --local-bin-path bin build --copy-bins
-RUN /bin/program-info
 
 COPY test test/
 RUN stack test

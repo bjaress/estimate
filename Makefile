@@ -30,17 +30,17 @@ $(dir)/docker :
 	$(done)
 
 
-build : $(dir)/estimate $(dir)/program-info
-$(dir)/estimate $(dir)/program-info: app/ src/ $(dir)/stack
+build : $(dir)/estimate
+$(dir)/estimate: app/ src/ $(dir)/stack
 	stack --local-bin-path $(dir) build --copy-bins
 
 package : $(dir)/package
-$(dir)/package : $(dir)/program-info $(dir)/docker Dockerfile
-	docker build -t `$(dir)/program-info` .
+$(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile
+	docker build -t `$(dir)/estimate --version` .
 	$(done)
 
 
 deploy : $(dir)/deploy
 $(dir)/deploy : $(dir)/package
-	docker push `$(dir)/program-info`
+	docker push `$(dir)/estimate --version`
 	$(done)
