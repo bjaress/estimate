@@ -6,6 +6,8 @@ import Data.Semigroup ((<>))
 import qualified Options.Applicative.Help.Pretty as Pretty
 import qualified Options.Applicative.Help.Chunk as Chunk
 import Options.Applicative.Help.Chunk ((<</>>))
+import qualified Data.Maybe as Maybe
+import qualified Data.ByteString.UTF8 as UTF8
 import GHC.Generics (Generic)
 
 import qualified Data.Yaml as Yaml
@@ -16,9 +18,21 @@ import qualified Data.List as List
 
 import qualified Types.Options as Options
 import qualified Types.EstimationResult as EstimationResult
+import qualified Types.ProgramInfo as ProgramInfo
 
 import qualified Lib
-import qualified ProgramInfo
+
+programInfo :: ProgramInfo.Type
+programInfo = ProgramInfo.Type{..}
+    where
+
+    version = "1.3.0"
+
+    namespace = "bjaress"
+    name = "estimate"
+    notice = "Copyright 2020 Brian Jaress"
+
+    url = "https://github.com/" ++ namespace ++ "/" ++ name
 
 main :: IO ()
 main = do
@@ -28,7 +42,7 @@ main = do
 
     where
 
-    optionDescription = info (options <**> helper <**> versionOpt <**> nameOpt)
+    optionDescription = info (options <**> helper <**> infoOpt)
         ( fullDesc
        <> header "Scrum-style project estimation"
        <> progDescDoc ( paragraphs
@@ -44,14 +58,11 @@ main = do
              ]
             ,[ "Whether you believe the estimates is up to you."
              ]])
-       <> footerDoc (preformatted [ProgramInfo.url, ProgramInfo.fullVersion]))
+       <> footer (ProgramInfo.url programInfo))
 
-    versionOpt = infoOption ProgramInfo.fullVersion
-        ( long "version"
-       <> help "Print version string and exit.")
-    nameOpt = infoOption ProgramInfo.fullName
-        ( long "name"
-       <> help "Print program name and exit.")
+    infoOpt = infoOption (UTF8.toString $ Yaml.encode programInfo)
+        ( long "info"
+       <> help "Print program info and exit.")
 
 
 prettyPrint :: Options.Type -> EstimationResult.Type -> IO ()
@@ -66,18 +77,11 @@ prettyPrint opt result
 paragraph :: [String] -> String
 paragraph = List.intercalate " "
 
-{- For some reason, you've really got to go around the barn for these.
--- At least, I couldn't find an easier way.
--}
--- Lines that aren't run together
-preformatted :: [String] -> Maybe Pretty.Doc
-preformatted = Chunk.unChunk . Chunk.vcatChunks . (Chunk.stringChunk <$>)
--- Lists of lines that are run together within each sublist, then
--- separated by a blank line
+-- Lists of lines that are run together (re-flowed) within each sublist,
+-- then separated by a blank line
 paragraphs :: [[String]] -> Maybe Pretty.Doc
 paragraphs =
     Chunk.unChunk . Chunk.vsepChunks . (Chunk.paragraph . paragraph <$>)
-
 
 options :: Parser Options.Type
 options = Options.Type

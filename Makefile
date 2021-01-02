@@ -34,15 +34,30 @@ build : $(dir)/estimate
 $(dir)/estimate: app/ src/ $(dir)/stack
 	stack --local-bin-path $(dir) build --copy-bins
 
-package : $(dir)/package
+
+$(dir)/info : $(dir)/estimate
+	$^ --info > $@
+
+$(dir)/%.info : $(dir)/info
+	awk >$@ 'BEGIN { FS = ": "} ; $$1=="$*" { print $$2 }' $^
+
+$(dir)/current.tag : $(dir)/name.info $(dir)/namespace.info $(dir)/version.info
+	echo >$@ \
+		`cat $(dir)/namespace.info`/`cat $(dir)/name.info`:`cat $(dir)/version.info`
+
+$(dir)/latest.tag : $(dir)/name.info $(dir)/namespace.info
+	echo >$@ \
+		`cat $(dir)/namespace.info`/`cat $(dir)/name.info`:latest
+
+
+package : $(dir)/package $(dir)/current.tag $(dir)/latest.tag
 $(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile
-	docker build -t `$(dir)/estimate --version` .
-	docker tag `$(dir)/estimate --version` `$(dir)/estimate --name`:latest
-	docker images -q `$(dir)/estimate --version` > $@
+	docker build -t `cat $(dir)/current.tag` -t `cat $(dir)/latest.tag` .
+	docker images -q `cat $(dir)/current.tag` > $@
 
 
 deploy : $(dir)/deploy
-$(dir)/deploy : $(dir)/package $(dir)/estimate
-	docker push `$(dir)/estimate --version`
-	docker push `$(dir)/estimate --name`:latest
+$(dir)/deploy : $(dir)/package $(dir)/current.tag $(dir)/latest.tag
+	docker push `cat $(dir)/current.tag`
+	docker push `cat $(dir)/latest.tag`
 	$(done)
