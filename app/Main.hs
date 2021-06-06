@@ -26,7 +26,7 @@ programInfo :: ProgramInfo.Type
 programInfo = ProgramInfo.Type{..}
     where
 
-    version = "1.3.0"
+    version = "1.4.0"
 
     namespace = "bjaress"
     name = "estimate"

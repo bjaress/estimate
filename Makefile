@@ -50,8 +50,9 @@ $(dir)/latest.tag : $(dir)/name.info $(dir)/namespace.info
 		`cat $(dir)/namespace.info`/`cat $(dir)/name.info`:latest
 
 
-package : $(dir)/package $(dir)/current.tag $(dir)/latest.tag
-$(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile
+package : $(dir)/package
+
+$(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile $(dir)/current.tag $(dir)/latest.tag
 	docker build -t `cat $(dir)/current.tag` -t `cat $(dir)/latest.tag` .
 	docker images -q `cat $(dir)/current.tag` > $@
 
