@@ -58,6 +58,7 @@ $(dir)/package : $(dir)/estimate $(dir)/docker Dockerfile $(dir)/current.tag $(d
 
 
 deploy : $(dir)/deploy
+
 $(dir)/deploy : $(dir)/package $(dir)/current.tag $(dir)/latest.tag
 	docker push `cat $(dir)/current.tag`
 	docker push `cat $(dir)/latest.tag`
