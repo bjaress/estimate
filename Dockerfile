@@ -1,22 +1,35 @@
-FROM fpco/stack-build-small:lts-16.26 as build
+FROM fpco/alpine-haskell-stack:8.10.4 as build
 
-COPY package.yaml .
+# project config (including ID of package index snapshot)
 COPY stack.yaml .
 
-# Grab dependencies into the Docker cache first
-RUN stack build --dependencies-only
-RUN stack test --dependencies-only
+# update package index
+RUN stack update
 
+# Dependency lists
+COPY package.yaml .
+
+# Fetch and compile dependencies
+RUN stack build --system-ghc --flag estimate:static --dependencies-only
+RUN stack test --system-ghc --dependencies-only
+
+# Code
 COPY src src/
 COPY app app/
-RUN stack --local-bin-path bin build --copy-bins
+
+# Compile and save to /bin
+RUN stack --local-bin-path bin build --copy-bins --system-ghc --flag estimate:static
 
 COPY test test/
-RUN stack test
+RUN stack --system-ghc test
 
 
-FROM ubuntu:18.04
+FROM scratch
 
-COPY --from=build /bin/estimate .
-ENTRYPOINT ["./estimate"]
-USER nobody
+COPY --from=build /bin/estimate /
+
+# Common user ID for "nobody"
+# https://en.m.wikipedia.org/wiki/User_identifier#Special_values
+USER 65534:65534
+
+ENTRYPOINT ["/estimate"]
