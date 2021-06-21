@@ -41,9 +41,9 @@ $(dir)/info : $(dir)/estimate
 $(dir)/%.info : $(dir)/info
 	awk >$@ 'BEGIN { FS = ": "} ; $$1=="$*" { print $$2 }' $^
 
-$(dir)/current.tag : $(dir)/name.info $(dir)/namespace.info $(dir)/version.info
+$(dir)/current.tag : $(dir)/name.info $(dir)/namespace.info version
 	echo >$@ \
-		`cat $(dir)/namespace.info`/`cat $(dir)/name.info`:`cat $(dir)/version.info`
+		`cat $(dir)/namespace.info`/`cat $(dir)/name.info`:`cat version`
 
 $(dir)/latest.tag : $(dir)/name.info $(dir)/namespace.info
 	echo >$@ \
