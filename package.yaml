@@ -1,10 +1,11 @@
 name:                estimate
-version:             0.0.0.0 # see app/Main.hs for real version
+# Version is split out into a separte file to avoid busting the cache of
+# dependencies (e.g. in Docker) for minor code changes.
+version:             !include version
 github:              "bjaress/estimate"
 license:             "GPL-3.0-only"
 author:              "Brian Jaress"
 maintainer:          "bjaress@gmail"
-copyright:           "2020 Brian Jaress"
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
