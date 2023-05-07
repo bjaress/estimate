@@ -1,4 +1,6 @@
-Scrum-style project estimation
+A Scrum-style project estimation tool for people doing the actual
+project work.
+
 
 This command-line application accepts as input:
 
@@ -10,7 +12,7 @@ This command-line application accepts as input:
 and produces as output:
 
 *   the number of time intervals until completion at the intended rate
-    (if given) or at a reasonable rate inferred from past intervals
+    (if given) or at a reliable rate inferred from past intervals
 *   the percentage chance of actually achieving that, based on past
     intervals
 
@@ -26,12 +28,12 @@ success rate for a specific target.
 
 [Evidence-Based Scheduling]: https://en.wikipedia.org/wiki/Evidence-based_Scheduling
 
-Everything else, such as picking a work rate if none is provided or
-converting a work rate into a number of time intervals until completion,
-is based on rule-of-thumb assumptions that can be overridden with
-optional input.  For example, most agile tracking systems track all work
-done across all projects, so when a past interval is randomly selected,
-only a fraction of the work it represents is credited to the project.
+Everything else -- such as picking a work rate if none is provided or
+converting a work rate into a target completion -- is based on
+rule-of-thumb assumptions that can be overridden with optional input.
+For example, it's usually easiest to track the work of a team across all
+projects.  So when a past interval is randomly selected, only a fraction
+of the work it represents is credited to the project being estimated.
 The fraction defaults to a rule of thumb for "the big project we're
 focused on" but can be overridden.
 
